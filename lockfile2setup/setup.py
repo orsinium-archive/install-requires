@@ -11,6 +11,7 @@ from requirementslib import Lockfile  # noQA
 
 path = Path(__file__).parent
 lockfile = Lockfile.create(path)
+requirements = lockfile.as_requirements(dev=False)
 
 
 setup(
@@ -18,5 +19,5 @@ setup(
     version='0.1.0',
     description='Description also required',
     packages=find_packages(),
-    install_requires=lockfile.as_requirements(dev=False),
+    install_requires=requirements,
 )
