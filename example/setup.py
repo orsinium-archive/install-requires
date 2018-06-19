@@ -3,7 +3,7 @@ from pathlib import Path
 from pip._internal import main as pip
 
 
-pip(['install', 'install-requires'])
+pip(['install', 'install-requires[pipfile]'])
 
 
 from install_requires import convert  # noQA
