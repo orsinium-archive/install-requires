@@ -87,4 +87,4 @@ LOADERS = {
 def convert(name_from, name_to, path):
     loader = LOADERS[name_from]
     dumper = DUMPERS[name_to]
-    return getattr(dumper(path), loader)
+    return getattr(dumper(path), loader)()
