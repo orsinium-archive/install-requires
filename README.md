@@ -1,42 +1,27 @@
 # install_requires
 
-## Make setup.py
+Convert between dependency describing formats.
 
-### requirements.txt -> setup.py
+Input formats:
+* `Pipfile`
+* `Pipfile.lock`
+* `pyproject.toml` (poetry)
+* `requirements.txt`
 
-See [requirements2setup](requirements2setup/setup.py) example.
+Output formats:
+* `setup.py` (return `install_requires` and `dependency_links`)
+* `requirements.txt` (return list of lines)
 
-### Pipfile -> setup.py
+## Usage
 
-See [pipfile2setup](pipfile2setup/setup.py) example.
+Pass input format, output format and path to file that must be parsed into `convert` function:
 
+```python
+from pathlib import Path
+from install_requires import convert
 
-### Pipfile.lock -> setup.py
-
-See [lockfile2setup](lockfile2setup/setup.py) example.
-
-
-### pyproject.toml -> setup.py, requirements.txt
-
-See [poetry-setup](https://github.com/orsinium/poetry-setup) project.
-
-
-## Work with pipenv
-
-### requirements.txt -> Pipfile
-
-```bash
-pipenv install --requirements requirements.txt
+path = Path(__file__).parent
+convert('pyproject.toml', 'setup.py', path)
 ```
 
-### Pipfile -> Pipfile.lock
-
-```bash
-pipenv lock
-```
-
-### Pipfile.lock -> requirements.txt
-
-```bash
-pipenv lock --requirements > requirements.txt
-```
+See [example](example/setup.py) for more details.
