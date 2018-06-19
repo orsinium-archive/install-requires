@@ -1,4 +1,3 @@
-from contextlib import suppress
 
 try:
     # pip>=10
@@ -8,12 +7,8 @@ except ImportError:
     from pip.download import PipSession
     from pip.req import parse_requirements
 
-
-with suppress(ImportError):
-    from requirementslib import Pipfile, Requirement, Lockfile
-
-with suppress(ImportError):
-    from poetry_setup import PoetrySetup
+from requirementslib import Pipfile, Requirement, Lockfile
+from poetry_setup import PoetrySetup
 
 
 VCS_LIST = ('git+', 'svn+', 'hg+', 'bzr+')
@@ -29,6 +24,8 @@ class Setup:
         install_requires = []
         dependency_links = []
         for req in reqs:
+            if req.startswith('-i'):
+                continue
             if req.startswith('-e'):
                 req = req[2:]
             req = req.strip()
@@ -42,7 +39,7 @@ class Setup:
 
     def from_requirements(self):
         path = self.path / 'requirements.txt'
-        requirements = parse_requirements(path, session=PipSession())
+        requirements = parse_requirements(str(path), session=PipSession())
         requirements = [str(r.req) for r in requirements]
         return self._parse_requirements(requirements)
 
