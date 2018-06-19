@@ -7,8 +7,15 @@ except ImportError:
     from pip.download import PipSession
     from pip.req import parse_requirements
 
-from requirementslib import Pipfile, Requirement, Lockfile
-from poetry_setup import PoetrySetup
+try:
+    from requirementslib import Pipfile, Requirement, Lockfile
+except ImportError:
+    Pipfile = Requirement = Lockfile = None
+
+try:
+    from poetry_setup import PoetrySetup
+except ImportError:
+    PoetrySetup = None
 
 
 VCS_LIST = ('git+', 'svn+', 'hg+', 'bzr+')
@@ -44,6 +51,9 @@ class Setup:
         return self._parse_requirements(requirements)
 
     def from_pipfile(self):
+        if Pipfile is None:
+            raise ImportError('please, install extra requirements: install-requires[pipfile]')
+
         project = Pipfile.load(self.path)
         requirements = []
         packages = project.get_sections()['packages'].items()
@@ -53,11 +63,17 @@ class Setup:
         return self._parse_requirements(requirements)
 
     def from_lockfile(self):
+        if Pipfile is None:
+            raise ImportError('please, install extra requirements: install-requires[pipfile]')
+
         lockfile = Lockfile.create(self.path)
         requirements = lockfile.as_requirements(dev=False)
         return self._parse_requirements(requirements)
 
     def from_poetry(self):
+        if PoetrySetup is None:
+            raise ImportError('please, install extra requirements: install-requires[poetry]')
+
         ps = PoetrySetup(self.path)
         requirements = ps.get_requirements().split('\n')
         return self._parse_requirements(requirements)
