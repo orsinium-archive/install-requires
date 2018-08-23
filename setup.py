@@ -12,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='install-requires',
-    version='0.2.0',
+    version='0.2.1',
     description='Convert requirements between formats',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -22,6 +22,6 @@ setup(
     packages=['install_requires'],
     extras_require={
         'poetry': ['poetry-setup'],
-        'pipfile': ['requirementslib'],
+        'pipfile': ['requirementslib<=1.0.11'],
     },
 )
