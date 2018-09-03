@@ -1,4 +1,6 @@
+from pathlib import Path
 
+# pip
 try:
     # pip>=10
     from pip._internal.download import PipSession
@@ -7,11 +9,13 @@ except ImportError:
     from pip.download import PipSession
     from pip.req import parse_requirements
 
+# pipenv
 try:
     from requirementslib import Pipfile, Requirement, Lockfile
 except ImportError:
     Pipfile = Requirement = Lockfile = None
 
+# poetry
 try:
     from poetry_setup import PoetrySetup
 except ImportError:
@@ -24,6 +28,8 @@ SCHEME_LIST = ('http://', 'https://', 'ftp://', 'ftps://', 'file://')
 
 class Setup:
     def __init__(self, path):
+        if isinstance(path, str):
+            path = Path(path)
         self.path = path
 
     @staticmethod
@@ -79,7 +85,7 @@ class Setup:
         return self._parse_requirements(requirements)
 
 
-class Requirements:
+class Requirements(Setup):
     @staticmethod
     def _parse_requirements(reqs):
         return reqs
@@ -97,7 +103,7 @@ LOADERS = {
 }
 
 
-def convert(name_from, name_to, path):
+def convert(name_from, name_to, path='.'):
     loader = LOADERS[name_from]
     dumper = DUMPERS[name_to]
     return getattr(dumper(path), loader)()

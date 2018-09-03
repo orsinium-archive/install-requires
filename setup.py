@@ -24,4 +24,7 @@ setup(
         'poetry': ['poetry-setup'],
         'pipfile': ['requirementslib<=1.0.11'],
     },
+    entry_points={
+        'console_scripts': ['install-requires = install_requires.cli:convert'],
+    }
 )
