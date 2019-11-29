@@ -1,5 +1,7 @@
 # install_requires
 
+**DEPRECATED:** use [dephell](https://github.com/dephell/dephell) instead. It can do the same and much more.
+
 Convert between dependency describing formats.
 
 Input formats:
